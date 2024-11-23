@@ -35,32 +35,7 @@ export type Email = {
   spamScore: number;
   language: string;
   cc: any[];
-  connection: {
-    id: string;
-    secure: boolean;
-    localAddress: string;
-    localPort: number;
-    remoteAddress: string;
-    remotePort: number;
-    clientHostname: string;
-    openingCommand: string;
-    hostNameAppearsAs: string;
-    xClient: Map<any, any>;
-    xForward: Map<any, any>;
-    transmissionType: string;
-    tlsOptions: {
-      name: string;
-      standardName: string;
-      version: string;
-    };
-    envelope: {
-      mailFrom: { address: string; args: boolean };
-      rcptTo: { address: string; args: boolean }[];
-    };
-    transaction: number;
-    servername: string;
-    mailPath: string;
-  };
+  connection: Connection;
   envelopeFrom: { address: string; args: boolean };
   envelopeTo: { address: string; args: boolean }[];
 };
