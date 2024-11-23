@@ -1,11 +1,12 @@
 import { app, nodeMailin } from "./app";
 
-const PORT = process.env.PORT || 3000;
+const API_PORT = process.env.API_PORT || 3000;
+const SMTP_PORT = process.env.SMTP_PORT || 25;
 
-app.listen(PORT, () => {
-  console.log(`API server running on http://localhost:${PORT}`);
+app.listen(API_PORT, () => {
+  console.log(`API server running on http://localhost:${API_PORT}`);
 });
 
 nodeMailin.start({
-  port: 25,
+  port: SMTP_PORT,
 });
