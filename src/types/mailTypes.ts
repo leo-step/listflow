@@ -92,4 +92,4 @@ export type Connection = {
   mailPath: string;
 };
 
-export type Content = Buffer
+export type Content = Buffer;
