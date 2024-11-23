@@ -1,10 +1,11 @@
 import express from "express";
-import routes from "./routes"
+import routes from "./routes";
 
 const app = express();
+const nodeMailin = require("node-mailin");
 
 app.use(express.json());
 
 app.use("/api", routes);
 
-export default app;
+export { app, nodeMailin };
