@@ -5,7 +5,7 @@ export const handleMessage = (
   data: Email,
   content: Content
 ) => {
-  console.log(content);
+  console.log(data);
   /* Do something useful with the parsed message here.
    * Use parsed message `data` directly or use raw message `content`. */
 };
