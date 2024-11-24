@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const APIKeySchema = new Schema({
-  appName: { type: String, required: true },
+  appName: { type: String, required: true, unique: true },
   contactEmail: { type: String, required: true },
   apiKey: { type: String, required: true, unique: true }, // TODO: security
 });
