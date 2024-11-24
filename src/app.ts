@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import routes from "./routes";
 import { handleMessage } from "./controllers/mailController";
 import authMiddleware from "./middlewares/authMiddleware";

@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import { APIKeyModel } from "../models/authModel";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -8,8 +13,9 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const token = authHeader.split(" ")[1];
-  if (token !== "your-secret-token") {
+  const token = authHeader.split(" ")[1]; // make this into api key instead of bearer token
+  const result = await APIKeyModel.findOne({ apiKey: token });
+  if (!result) {
     res.status(403).json({ message: "Invalid token" });
     return;
   }
