@@ -1,6 +1,8 @@
 // implement testing with jest
-
+const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
+
+dotenv.config();
 
 // const API_PORT = process.env.API_PORT || 3000;
 const SMTP_PORT = process.env.SMTP_PORT || 25;

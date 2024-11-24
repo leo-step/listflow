@@ -7,6 +7,10 @@ const EmailSchema = new Schema({
   time: { type: Number, required: true }, // unix
   messageId: { type: String, required: true },
   from: { type: String, required: true },
+  computed: {
+    expiry: { type: Number, required: true },
+    embedding: { type: [Number], required: true },
+  },
 });
 
 const EmailModel = model("Email", EmailSchema);
