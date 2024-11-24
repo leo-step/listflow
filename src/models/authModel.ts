@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const APIKeySchema = new Schema({
   appName: { type: String, required: true, unique: true },

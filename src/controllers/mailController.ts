@@ -1,11 +1,21 @@
-import { Connection, Content, Email } from "../types/mailTypes";
+import { EmailModel } from "../models/emailModel";
+import { SMTPConnection, SMTPContent, SMTPEmail } from "../types/mailTypes";
 
-export const handleMessage = (
-  connection: Connection,
-  data: Email,
-  content: Content
+export const handleMessage = async (
+  connection: SMTPConnection,
+  data: SMTPEmail,
+  content: SMTPContent
 ) => {
-  console.log(data);
-  /* Do something useful with the parsed message here.
-   * Use parsed message `data` directly or use raw message `content`. */
+  const email = new EmailModel({
+    html: data.html,
+    text: data.text,
+    subject: data.subject,
+    time: Math.floor(data.date.getTime() / 1000),
+    messageId: data.messageId,
+    from: data.envelopeFrom.address,
+  });
+
+  if (connection.remoteAddress !== "127.0.0.1") {
+    await email.save();
+  }
 };

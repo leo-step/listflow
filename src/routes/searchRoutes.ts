@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { findAll } from "../controllers/searchController";
-import authMiddleware from "../middlewares/authMiddleware";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-export type Email = {
+export type SMTPEmail = {
   attachments: any[];
   headers: Map<
     string,
@@ -35,12 +35,12 @@ export type Email = {
   spamScore: number;
   language: string;
   cc: any[];
-  connection: Connection;
+  connection: SMTPConnection;
   envelopeFrom: { address: string; args: boolean };
   envelopeTo: { address: string; args: boolean }[];
 };
 
-export type Connection = {
+export type SMTPConnection = {
   id: string;
   secure: boolean;
   localAddress: string;
@@ -67,4 +67,4 @@ export type Connection = {
   mailPath: string;
 };
 
-export type Content = Buffer;
+export type SMTPContent = Buffer;
