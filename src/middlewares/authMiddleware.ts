@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { APIKeyModel } from "../models/authModel";
 
+declare global {
+  namespace Express {
+    interface Request {
+      appName: string;
+    }
+  }
+}
+
 const authMiddleware = async (
   req: Request,
   res: Response,
@@ -19,6 +27,8 @@ const authMiddleware = async (
     res.status(403).json({ message: "Invalid token" });
     return;
   }
+
+  req.appName = result.appName;
 
   next();
 };
