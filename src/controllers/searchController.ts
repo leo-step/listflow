@@ -54,6 +54,6 @@ const ensureSafeOptions = (options: mongoose.mongo.FindOptions<Document>) => {
     options.projection = {};
   }
 
-  options.projection._id = 0;
+  options.projection._id = 0; // warning, this might break projection
   options.projection.__v = 0;
 };
