@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { findAll } from "../controllers/searchController";
+import { find } from "../controllers/searchController";
 
 const router = Router();
 
-router.post("/findall", findAll);
+router.post("/find", find);
 
 export default router;
