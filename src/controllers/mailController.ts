@@ -4,9 +4,11 @@ import { getUnixTime } from "../utils/helpers";
 import { getExpiryTime } from "../inference/expiry";
 import { getEmailEmbedding } from "../inference/embedding";
 import { getTags } from "../inference/tagging";
+import { HookModel } from "../models/hookModel";
 
 const AUTHORIZED_SENDERS: string[] = ["sender@example.com"];
 const AUTHORIZED_RECIPIENTS: string[] = [];
+const WEBHOOK_BATCH_SIZE = 64;
 
 class ErrorWithResponseCode extends Error {
   responseCode: number;
@@ -99,6 +101,15 @@ export const handleMessage = async (
   // if (connection.remoteAddress !== "127.0.0.1") {
 
   // }
+
+  // TODO: replace with AWS SQS and Lambda
+  const totalHookCount = await HookModel.countDocuments();
+  const totalPages = Math.ceil(totalHookCount / WEBHOOK_BATCH_SIZE);
+
+  for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+    const skip = pageNum * WEBHOOK_BATCH_SIZE;
+    const hooks = await HookModel.find().skip(skip).limit(WEBHOOK_BATCH_SIZE);
+  }
 };
 
 // nodeMailin.on("error", () => {});
