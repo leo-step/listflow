@@ -3,6 +3,7 @@ import { SMTPConnection, SMTPContent, SMTPEmail } from "../types/mailTypes";
 import { getUnixTime } from "../utils/helpers";
 import { getExpiryTime } from "../inference/expiry";
 import { getEmailEmbedding } from "../inference/embedding";
+import { getTags } from "../inference/tagging";
 
 export const handleMessage = async (
   connection: SMTPConnection,
@@ -10,16 +11,16 @@ export const handleMessage = async (
   content: SMTPContent
 ) => {
   // TODO:
-  // compute tags
   // event extraction
   // handle duplicate emails
   // create indexes
   // handle image OCR
   // handle attachments
 
-  const [embedding, expiry] = await Promise.all([
+  const [embedding, expiry, tags] = await Promise.all([
     getEmailEmbedding(data),
     getExpiryTime(data),
+    getTags(data),
   ]);
 
   const email = new EmailModel({
@@ -32,10 +33,11 @@ export const handleMessage = async (
     computed: {
       expiry,
       embedding,
+      tags,
     },
   });
 
-  await email.save();
+  const savedEmail = await email.save();
 
   // if (connection.remoteAddress !== "127.0.0.1") {
 
