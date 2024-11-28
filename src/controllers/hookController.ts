@@ -6,12 +6,17 @@ import { EMAILS_COLLECTION } from "./searchController";
 
 // const HOOKS_COLLECTION = "hooks";
 
+type HeadersDict = {
+  [key: string]: string;
+};
+
 export const createHook = async (req: Request, res: Response) => {
   const body = req.body;
   const appName = req.appName;
   const filter = body.filter as mongoose.mongo.Filter<Document>;
   const target = body.target as string;
   const method = body.method as HTTPMethod;
+  const headers = body.headers as HeadersDict;
   const payload = body.payload;
 
   const totalMatches = await mongoose.connection.db
@@ -28,6 +33,7 @@ export const createHook = async (req: Request, res: Response) => {
     filter,
     target,
     method,
+    headers,
     payload,
   });
   const savedHook = await hook.save();

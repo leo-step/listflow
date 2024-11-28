@@ -15,9 +15,18 @@ const HookSchema = new Schema({
     required: true,
     enum: [...Object.values(HTTPMethod)],
   },
-  payload: { type: Schema.Types.Mixed, required: true }, // how to include email into the payload?
+  headers: { type: Schema.Types.Mixed, required: true },
+  payload: { type: Schema.Types.Mixed, required: true },
 });
 
+/* request that will be sent will look like
+
+{
+  payload: {...},
+  email: {...}
+}
+
+*/
 const HookModel = model("Hook", HookSchema);
 
 export { HookModel };
