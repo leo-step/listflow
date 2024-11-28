@@ -10,6 +10,7 @@ const EmailSchema = new Schema({
   computed: {
     expiry: { type: Number, required: true },
     embedding: { type: [Number], required: true },
+    tags: { type: [String], required: true },
   },
 });
 

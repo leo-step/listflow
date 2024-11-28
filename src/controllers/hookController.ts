@@ -21,7 +21,7 @@ export const createHook = async (req: Request, res: Response) => {
 
   const totalMatches = await mongoose.connection.db
     ?.collection(EMAILS_COLLECTION)
-    .countDocuments(filter);
+    .countDocuments(filter); // handle mongo errors?
 
   if (!totalMatches) {
     res.status(503).send("Server database connection is not established");
@@ -41,4 +41,32 @@ export const createHook = async (req: Request, res: Response) => {
   res.status(200).send({
     _id: savedHook._id,
   });
+};
+
+export const updateHook = async (req: Request, res: Response) => {
+  // const body = req.body;
+  // const appName = req.appName;
+  // const _id = body._id;
+  // const updates = body.updates as ;
+  // const result = await HookModel.updateOne(
+  //   { appName, _id },
+  //   { $set: { field: newValue } }
+  // );
+};
+
+export const deleteHook = async (req: Request, res: Response) => {
+  const body = req.body;
+  const appName = req.appName;
+  const _id = body._id;
+
+  const result = await HookModel.deleteOne({
+    appName,
+    _id,
+  });
+
+  if (result.deletedCount === 0) {
+    res.status(404).send("Hook not found");
+  } else {
+    res.status(200).send("Hook deleted successfully");
+  }
 };

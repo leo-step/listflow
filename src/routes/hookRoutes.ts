@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { createHook } from "../controllers/hookController";
+import {
+  createHook,
+  deleteHook,
+  updateHook,
+} from "../controllers/hookController";
 
 const router = Router();
 
 router.post("/create", createHook);
-router.post("/update", () => {});
-router.post("/delete", () => {});
+router.post("/update", updateHook);
+router.post("/delete", deleteHook);
 
 export default router;
