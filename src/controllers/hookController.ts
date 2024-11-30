@@ -22,8 +22,9 @@ export const createHook = async (req: Request, res: Response) => {
   const totalMatches = await mongoose.connection.db
     ?.collection(EMAILS_COLLECTION)
     .countDocuments(filter); // handle mongo errors?
-  // instead of count you should test in memory running
+  // TODO: instead of count you should test in memory running
   // because thats what actually runs
+  // TODO: header must include content type json, just put in here
 
   if (!totalMatches) {
     res.status(503).send("Server database connection is not established");
