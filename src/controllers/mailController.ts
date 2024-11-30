@@ -6,6 +6,8 @@ import { getEmailEmbedding } from "../inference/embedding";
 import { getTags } from "../inference/tagging";
 import { HookModel } from "../models/hookModel";
 
+const { query } = require("mongo-query");
+
 const AUTHORIZED_SENDERS: string[] = ["sender@example.com"];
 const AUTHORIZED_RECIPIENTS: string[] = [];
 const WEBHOOK_BATCH_SIZE = 64;
@@ -109,6 +111,19 @@ export const handleMessage = async (
   for (let pageNum = 0; pageNum < totalPages; pageNum++) {
     const skip = pageNum * WEBHOOK_BATCH_SIZE;
     const hooks = await HookModel.find().skip(skip).limit(WEBHOOK_BATCH_SIZE);
+    const matchedHooks = hooks.filter((hook) => query(hook.filter, savedEmail));
+    await Promise.all(
+      matchedHooks.map(async (hook) => {
+        return await fetch(hook.target, {
+          method: hook.method,
+          headers: hook.headers, // header must have Content-Type JSON
+          body: JSON.stringify({
+            payload: hook.payload,
+            email: savedEmail,
+          }),
+        });
+      })
+    );
   }
 };
 
