@@ -31,6 +31,7 @@ const transporter = nodemailer.createTransport({
     subject: parsedEmail.subject,
     text: parsedEmail.text,
     html: parsedEmail.html,
+    attachments: parsedEmail.attachments,
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
