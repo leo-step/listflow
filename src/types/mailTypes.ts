@@ -1,5 +1,17 @@
+export type Attachment = {
+  type: "attachment" | any;
+  content: Buffer;
+  contentType: string;
+  release: any;
+  contentDisposition: string;
+  filename: string;
+  headers: Map<string, string>;
+  checksum: string;
+  size: number;
+};
+
 export type SMTPEmail = {
-  attachments: any[];
+  attachments: Attachment[];
   headers: Map<
     string,
     {

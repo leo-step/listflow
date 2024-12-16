@@ -5,6 +5,7 @@ import { getExpiryTime } from "../inference/expiry";
 import { getTags } from "../inference/tagging";
 import { HookModel } from "../models/hookModel";
 import { createEmbedding } from "../utils/openai";
+import { getAttachmentDescriptions } from "../inference/attachments";
 
 const { query } = require("mongo-query");
 
@@ -66,6 +67,15 @@ export const handleStartMessage = (connection: SMTPConnection) => {
   console.log(connection);
 };
 
+const createParsedEmailText = (
+  data: SMTPEmail,
+  attachmentDescriptions: string[]
+) => {
+  return `SUBJECT: ${data.subject}\nFrom: ${data.from}\nBody: ${
+    data.text
+  }\nAttachments: ${attachmentDescriptions.join("\n")}`;
+};
+
 export const handleMessage = async (
   connection: SMTPConnection,
   data: SMTPEmail,
@@ -79,7 +89,8 @@ export const handleMessage = async (
   // handle attachments
   console.log(data);
 
-  const parsedText = `SUBJECT: ${data.subject}\nFrom: ${data.from}\nBody: ${data.text}`;
+  const attachmentDescriptions = await getAttachmentDescriptions(data);
+  const parsedText = createParsedEmailText(data, attachmentDescriptions);
 
   const [embedding, expiry, tags] = await Promise.all([
     createEmbedding(parsedText),
@@ -89,7 +100,7 @@ export const handleMessage = async (
 
   const email = new EmailModel({
     html: data.html,
-    text: data.text,
+    text: data.text, // TODO: change email models to hold parsedText and other new fields
     subject: data.subject,
     time: getUnixTime(data.date),
     messageId: data.messageId,
