@@ -1,11 +1,17 @@
 // implement testing with jest
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
+const { simpleParser } = require("mailparser");
+const fs = require("fs");
 
 dotenv.config();
 
+const emailFileName = "tests/emails/freefood_text_img_attachment.eml";
+
 // const API_PORT = process.env.API_PORT || 3000;
 const SMTP_PORT = process.env.SMTP_PORT || 25;
+
+const emailContent = fs.readFileSync(emailFileName, "utf-8");
 
 const transporter = nodemailer.createTransport({
   host: "localhost",
@@ -16,18 +22,22 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const mailOptions = {
-  from: '"Sender Name" <sender@example.com>',
-  to: "receiver@example.com",
-  subject: "Test Email",
-  text: "This is a test email sent to a local SMTP server.",
-  html: "<b>This is a test email sent to a local SMTP server.</b>",
-};
+(async () => {
+  const parsedEmail = await simpleParser(emailContent);
 
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error("Error sending email:", error);
-  } else {
-    console.log("Email sent:", info.response);
-  }
-});
+  const mailOptions = {
+    from: '"Sender Name" <sender@example.com>',
+    to: parsedEmail.to.text,
+    subject: parsedEmail.subject,
+    text: parsedEmail.text,
+    html: parsedEmail.html,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.error("Error:", err);
+    } else {
+      console.log("Email sent:", info.response);
+    }
+  });
+})();

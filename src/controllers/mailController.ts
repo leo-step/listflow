@@ -2,9 +2,9 @@ import { EmailModel } from "../models/emailModel";
 import { SMTPConnection, SMTPContent, SMTPEmail } from "../types/mailTypes";
 import { getUnixTime } from "../utils/helpers";
 import { getExpiryTime } from "../inference/expiry";
-import { getEmailEmbedding } from "../inference/embedding";
 import { getTags } from "../inference/tagging";
 import { HookModel } from "../models/hookModel";
+import { createEmbedding } from "../utils/openai";
 
 const { query } = require("mongo-query");
 
@@ -77,11 +77,14 @@ export const handleMessage = async (
   // create indexes
   // handle image OCR
   // handle attachments
+  console.log(data);
+
+  const parsedText = `SUBJECT: ${data.subject}\nFrom: ${data.from}\nBody: ${data.text}`;
 
   const [embedding, expiry, tags] = await Promise.all([
-    getEmailEmbedding(data),
-    getExpiryTime(data),
-    getTags(data),
+    createEmbedding(parsedText),
+    getExpiryTime(data), // should this use parsedText?
+    getTags(data, parsedText),
   ]);
 
   const email = new EmailModel({
@@ -105,26 +108,28 @@ export const handleMessage = async (
   // }
 
   // TODO: replace with AWS SQS and Lambda
-  const totalHookCount = await HookModel.countDocuments();
-  const totalPages = Math.ceil(totalHookCount / WEBHOOK_BATCH_SIZE);
+  // ERROR: query is not a function
 
-  for (let pageNum = 0; pageNum < totalPages; pageNum++) {
-    const skip = pageNum * WEBHOOK_BATCH_SIZE;
-    const hooks = await HookModel.find().skip(skip).limit(WEBHOOK_BATCH_SIZE);
-    const matchedHooks = hooks.filter((hook) => query(hook.filter, savedEmail));
-    await Promise.all(
-      matchedHooks.map(async (hook) => {
-        return await fetch(hook.target, {
-          method: hook.method,
-          headers: hook.headers, // header must have Content-Type JSON
-          body: JSON.stringify({
-            payload: hook.payload,
-            email: savedEmail,
-          }),
-        });
-      })
-    );
-  }
+  // const totalHookCount = await HookModel.countDocuments();
+  // const totalPages = Math.ceil(totalHookCount / WEBHOOK_BATCH_SIZE);
+
+  // for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+  //   const skip = pageNum * WEBHOOK_BATCH_SIZE;
+  //   const hooks = await HookModel.find().skip(skip).limit(WEBHOOK_BATCH_SIZE);
+  //   const matchedHooks = hooks.filter((hook) => query(hook.filter, savedEmail));
+  //   await Promise.all(
+  //     matchedHooks.map(async (hook) => {
+  //       return await fetch(hook.target, {
+  //         method: hook.method,
+  //         headers: hook.headers, // header must have Content-Type JSON
+  //         body: JSON.stringify({
+  //           payload: hook.payload,
+  //           email: savedEmail,
+  //         }),
+  //       });
+  //     })
+  //   );
+  // }
 };
 
 // nodeMailin.on("error", () => {});

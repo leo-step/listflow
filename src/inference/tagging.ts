@@ -4,7 +4,6 @@ import { getOpenAIJsonResponse, userPrompt } from "../utils/openai";
 const TOPIC_TAGS = [
   "Speaker Event",
   "Internship",
-  "Eating Club",
   "Tower Club",
   "Cap and Gown Club",
   "Boba",
@@ -22,7 +21,7 @@ type TagsDict = {
   [key: string]: boolean;
 };
 
-const getRuleBasedTags = (data: SMTPEmail) => {
+const getRuleBasedTags = (data: SMTPEmail, topicTags: string[]) => {
   const ruleTags: string[] = [];
   const toAddresses = data.envelopeTo.map((value) => value.address);
 
@@ -41,11 +40,23 @@ const getRuleBasedTags = (data: SMTPEmail) => {
     ruleTags.push("Free Food");
   }
 
+  if (topicTags.includes("Tower Club")) {
+    ruleTags.push("Eating Club");
+  }
+
   return ruleTags;
 };
 
-const getTopicTags = async (data: SMTPEmail) => {
-  const classifyTagsPrompt = userPrompt((tags: string[]) => ``); // TODO: needs prompt
+const getTopicTags = async (parsedText: string) => {
+  const classifyTagsPrompt = userPrompt(
+    (tags: string[]) =>
+      `Here is the parsed content of an email: ${parsedText}
+
+  Return a JSON with the following keys: ${tags.join(", ")}.
+  Each key represents a tag that the email could be tagged with.
+  The value for each key should be a boolean true if the email relates to that key/tag.
+  Otherwise return value as false.`
+  );
 
   const promises: Promise<TagsDict | null>[] = [];
   for (let i = 0; i < TOPIC_TAGS.length; i += TAG_BATCH_SIZE) {
@@ -73,8 +84,8 @@ const getTagsWithTrue = (tagsDict: TagsDict) => {
     .map(([key]) => key);
 };
 
-export const getTags = async (data: SMTPEmail) => {
-  const ruleTags = getRuleBasedTags(data);
-  const topicTags = await getTopicTags(data);
+export const getTags = async (data: SMTPEmail, parsedText: string) => {
+  const topicTags = await getTopicTags(parsedText);
+  const ruleTags = getRuleBasedTags(data, topicTags);
   return Array.from(new Set([...ruleTags, ...topicTags]));
 };
