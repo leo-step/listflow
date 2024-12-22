@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Process listserv emails with LLM metadata extraction, queryable API, and webhook integration.",
   "main": "server.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
