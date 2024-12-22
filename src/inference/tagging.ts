@@ -72,7 +72,7 @@ const getTopicTags = async (parsedText: string) => {
   // }
 
   const tags = results
-    .filter((result: TagsDict | null) => result !== null)
+    .filter((result): result is TagsDict => result !== null)
     .map((result: TagsDict) => getTagsWithTrue(result));
 
   return tags.reduce((a: string[], b: string[]) => [...a, ...b]);
