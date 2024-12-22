@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const API_PORT = process.env.API_PORT || 3000;
+const API_PORT = process.env.PORT || 3000;
 const SMTP_PORT = process.env.SMTP_PORT || 25;
 
 app.listen(API_PORT, () => {
