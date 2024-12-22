@@ -12,14 +12,13 @@ export const getAttachmentDescriptions = async (data: SMTPEmail) => {
 };
 
 const processImageAttachment = async (image: Attachment) => {
-  return "";
+  return ""; // TODO: process image
 };
 
 // attachments: [
 //     {
 //       type: 'attachment',
-//       content: <Buffer ff d8 ff e1 2d 89 45 78 69 66 00 00 4d 4d 00 2a 00 00 00 08 00 0b 01 0f 00 02 00 00 00 06 00 00 00 92 01 10 00 02 00 00 00 1b 00 00 00 98 01 12 00 03 ... 3490869 more bytes>,
-//       contentType: 'image/jpeg',
+//       content: <Buffer ff d8 ff e1 2d 89 45 78 69 66 00 00 4d 4d 00 2a 00
 //       release: null,
 //       contentDisposition: 'inline',
 //       filename: 'image0.jpeg',

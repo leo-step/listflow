@@ -3,15 +3,16 @@ import { SMTPConnection, SMTPContent, SMTPEmail } from "../types/mailTypes";
 import { getUnixTime } from "../utils/helpers";
 import { getExpiryTime } from "../inference/expiry";
 import { getTags } from "../inference/tagging";
-import { HookModel } from "../models/hookModel";
+// import { HookModel } from "../models/hookModel";
 import { createEmbedding } from "../utils/openai";
 import { getAttachmentDescriptions } from "../inference/attachments";
+const { convert } = require("html-to-text");
 
-const { query } = require("mongo-query");
+// const { query } = require("mongo-query");
 
 const AUTHORIZED_SENDERS: string[] = ["sender@example.com"];
 const AUTHORIZED_RECIPIENTS: string[] = [];
-const WEBHOOK_BATCH_SIZE = 64;
+// const WEBHOOK_BATCH_SIZE = 64;
 
 class ErrorWithResponseCode extends Error {
   responseCode: number;
@@ -67,13 +68,10 @@ export const handleStartMessage = (connection: SMTPConnection) => {
   console.log(connection);
 };
 
-const createParsedEmailText = (
-  data: SMTPEmail,
-  attachmentDescriptions: string[]
-) => {
-  return `SUBJECT: ${data.subject}\nFrom: ${data.from}\nBody: ${
-    data.text
-  }\nAttachments: ${attachmentDescriptions.join("\n")}`;
+const createParsedEmailText = (data: SMTPEmail, attachments: string[]) => {
+  return `SUBJECT: ${data.subject}\nFrom: ${
+    data.envelopeFrom.address
+  }\nBody: ${convert(data.html)}\nAttachments: ${attachments.join("\n")}`;
 };
 
 export const handleMessage = async (
@@ -87,10 +85,10 @@ export const handleMessage = async (
   // create indexes
   // handle image OCR
   // handle attachments
+  data.text = convert(data.html);
   console.log(data);
-
-  const attachmentDescriptions = await getAttachmentDescriptions(data);
-  const parsedText = createParsedEmailText(data, attachmentDescriptions);
+  const attachments = await getAttachmentDescriptions(data);
+  const parsedText = createParsedEmailText(data, attachments);
 
   const [embedding, expiry, tags] = await Promise.all([
     createEmbedding(parsedText),
@@ -100,15 +98,17 @@ export const handleMessage = async (
 
   const email = new EmailModel({
     html: data.html,
-    text: data.text, // TODO: change email models to hold parsedText and other new fields
+    text: data.text,
     subject: data.subject,
     time: getUnixTime(data.date),
     messageId: data.messageId,
     from: data.envelopeFrom.address,
+    to: data.envelopeTo[0].address,
     computed: {
       expiry,
       embedding,
       tags,
+      attachments,
     },
   });
 

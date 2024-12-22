@@ -1,0 +1,253 @@
+Delivered-To: ls3841@g.princeton.edu
+Received: by 2002:a05:7110:6392:b0:254:7bf3:dfa1 with SMTP id p18csp2843387geg;
+        Sat, 21 Dec 2024 07:47:54 -0800 (PST)
+X-Forwarded-Encrypted: i=3; AJvYcCW7edLqcamMuP7uJicZbGR4Uvgy4jLv8mQltEpNR4+2b1oxNdfE9TiDn2j/qWvH2E8c07UeOfE=@g.princeton.edu
+X-Google-Smtp-Source: AGHT+IEJrTA/L5PrGlO03bXA/huGShVqeuVryFRsHelRfIkcpkr09XwePCdBE2K+GQ+TDvjYby2y
+X-Received: by 2002:a05:6902:138f:b0:e4a:ea18:b449 with SMTP id 3f1490d57ef6-e538c3d10c3mr5527546276.41.1734796074291;
+        Sat, 21 Dec 2024 07:47:54 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1734796074; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=IZ+duIporVxluIS9ycy8qWx2NaWMFGk1fgGpeed2ju1ey7STSTqVYXo/fowW6BUOQQ
+         jTheecNYGzIQlzEkaZQCDwqNsV/diATER39PEM8EY9xRXNZLsprgowxVi9c0fQjLgGd7
+         gFRDwfhbyS1KoHfI12ZQJLAgwba3lhxbf8SYzYVJzN1f/LWqFDUki5y1GlLnOLO+cPJo
+         Z3wkMPFzi7WaMi6px6KLMy43oLb/4TnW04yTWhWRiVE1UX6viHy8hRykMPlWAvl7vBt8
+         7mkk1HsEc8jitUVYqprWEfLNZtBWyo/YGZpKWY+ahdRif/zOKX2W+zZQqyf5FoMYmA4L
+         yjHw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-archive:list-owner:list-subscribe:list-unsubscribe:list-help
+         :precedence:to:subject:from:sender:reply-to:date:message-id
+         :mime-version:feedback-id:list-unsubscribe-post:dkim-signature;
+        bh=Gr73VMXmemT3PWfV4FBeSdtJP3yHLwKjF7pyytwLb8A=;
+        fh=zivWujsNXc70rtfPIYIevU73Hl1ZtzeRAHhe7oA4RYk=;
+        b=Q6Xk+WowX3GhrjPn9TGVOajc3EcXK/iog/AIvUBLVwcL0SMOLGfju3kHvCp/htKp2C
+         2Q2LtRW8wCkPy2BbFslUuzkCPcEV1M26/85jeJBeAxZ2j604yAL3UdfgCBkoquZfGRoK
+         tSggbDFJ3m9h5aoJ4bpWUOn85G0USkk3Lc9gBm64dQKeG/x+Q42VfVd2M9y9+5O+fH37
+         3M/9H/NNKv+Qo+gKyOTsAW7WDyA+WF4z4eegSy+6VoJXH6Ue3MJRlKBHAyQ+mEP0eTQA
+         NUm0gWXq1UTeLx5uMPtMbGM+3CR4tpjD4WvhXv6jr26Rv1R/ddO1KFpWJmRAVva0rq9B
+         bGdg==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@princeton.edu header.s=ser-20220912-pod header.b=W1MHDmmm;
+       arc=pass (i=1 spf=pass spfdomain=a1699369.bnc3.mailjet.com dkim=pass dkdomain=princeton.edu dmarc=pass fromdomain=princeton.edu);
+       spf=pass (google.com: domain of owner-whitmanwire@princeton.edu designates 205.220.177.254 as permitted sender) smtp.mailfrom=owner-whitmanwire@princeton.edu;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=princeton.edu
+Return-Path: <owner-whitmanwire@princeton.edu>
+Received: from mx0b-00005702.pphosted.com (mx0b-00005702.pphosted.com. [205.220.177.254])
+        by mx.google.com with ESMTPS id 3f1490d57ef6-e537d19cb05si3855682276.480.2024.12.21.07.47.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 21 Dec 2024 07:47:54 -0800 (PST)
+Received-SPF: pass (google.com: domain of owner-whitmanwire@princeton.edu designates 205.220.177.254 as permitted sender) client-ip=205.220.177.254;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@princeton.edu header.s=ser-20220912-pod header.b=W1MHDmmm;
+       arc=pass (i=1 spf=pass spfdomain=a1699369.bnc3.mailjet.com dkim=pass dkdomain=princeton.edu dmarc=pass fromdomain=princeton.edu);
+       spf=pass (google.com: domain of owner-whitmanwire@princeton.edu designates 205.220.177.254 as permitted sender) smtp.mailfrom=owner-whitmanwire@princeton.edu;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=princeton.edu
+Received: from pps.filterd (m0317969.ppops.net [127.0.0.1])
+	by mx0b-00005702.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BLCieCc003032;
+	Sat, 21 Dec 2024 10:47:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=princeton.edu;
+	 h=content-type:date:from:list-archive:list-help:list-owner
+	:list-subscribe:list-unsubscribe:list-unsubscribe-post
+	:message-id:mime-version:reply-to:sender:subject:to; s=
+	ser-20220912-pod; bh=Gr73VMXmemT3PWfV4FBeSdtJP3yHLwKjF7pyytwLb8A
+	=; b=W1MHDmmmSn5IBfYc121ldYfItoauV7xZg0wW37UaopezLwdn0x1W1pK+2pS
+	85gaeNUeVK+XcMr9DSEbp87yGVCQmSGmmbRAAZnS8NIMtY3tHP4+bS+gQ6JjOINM
+	TuRiYhDW9lu/FQSR8nCe4omExpP1xKd37wABA1uiIjHkQIwn/HXEcwkqU0E+3ZOP
+	NqDKs1LFZy+gcd7XlypUg8pB3Hd7AMHXFkpFDv+BJQjiRvQfbwqLp+uxG+uNwjZS
+	MGoN+p7phFWY1A54hOpJhvlNM60+toRJmSlugByQmBvDVH6O0dMC1jdoBODLALHH
+	hHvBDgqjZdBwo9XsjsKV1sKyQbQ==
+Received: from csgsmtp204l.princeton.edu (csgsmtp204l.princeton.edu [140.180.223.138])
+	by mx0b-00005702.pphosted.com (PPS) with ESMTPS id 43mgf23jqh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 21 Dec 2024 10:47:52 -0500 (EST)
+Received: from cisdrlists200l.Princeton.EDU (cisdrlists200l.princeton.edu [128.112.128.82])
+	(authenticated authid=smclauth bits=0)
+	by csgsmtp204l.Princeton.EDU (8.14.7/8.14.7) with ESMTP id 4BLFloAu087466
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 21 Dec 2024 10:47:50 -0500
+Received: from lists (localhost [127.0.0.1])
+	by cisdrlists200l.Princeton.EDU (8.15.2/8.15.2) with ESMTP id 4BLCFS24031095;
+	Sat, 21 Dec 2024 10:47:50 -0500
+Received: by LISTS.PRINCETON.EDU (LISTSERV-TCP/IP release 17.0) with spool id
+          1358922 for WHITMANWIRE@LISTS.PRINCETON.EDU; Sat, 21 Dec 2024
+          10:47:49 -0500
+Received: from csgsmtp204l.Princeton.EDU (csgsmtp204l.princeton.edu
+          [140.180.223.138]) by lists.Princeton.EDU (8.15.2/8.15.2) with ESMTP
+          id 4BLFlnDM143864 for <whitmanwire@lists.Princeton.EDU>; Sat, 21 Dec
+          2024 10:47:49 -0500
+Received: from cisdrex205w.pu.win.princeton.edu (cisdrex205w.princeton.edu
+          [10.6.60.210]) by csgsmtp204l.Princeton.EDU (8.14.7/8.14.7) with
+          ESMTP id 4BLFlnAm087432 for <whitmanwire@smtp.princeton.edu>; Sat, 21
+          Dec 2024 10:47:49 -0500
+Received: from cisdrex205w.pu.win.princeton.edu (10.6.60.210) by
+          cisdrex205w.pu.win.princeton.edu (10.6.60.210) with Microsoft SMTP
+          Server (version=TLS1_2,
+          cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sat,
+          21 Dec 2024 10:47:48 -0500
+Received: from BN1PR04CU002.outbound.protection.outlook.com (40.93.12.21) by
+          cisdrex205w.pu.win.princeton.edu (10.6.60.210) with Microsoft SMTP
+          Server id 15.2.1544.14 via Frontend Transport; Sat, 21 Dec 2024
+          10:47:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+          b=lkQC42XubcppJrBDY/l+tNXDL0/gwtwSIqPLwKM/tVryM8Ke6gY9Zfg/BDc1tz0U3r4pw7k8zajMN6Kw1XHfidElXnOLDBIbQ396L5iaIfAOPilyT5lCCi4deQBvqSEHkpQV6/ammVX+GcGPL3kY9MVy5kBYHSg3UvT59DbRh/Kb2+icsQh7/LPTl/109RaSW2dujFb6FOv8Tk1r1SE4mwD5SK1Llx14n+daGK+5VfCQWU17oAiYCMoSiUXn7bMUQcTYa0gb9oVuNVAogplCh1z+rr1vC6uewOlLLFgSVfAJLarKS7oNHdfkEn1q4g6OTxV3Vd7NKAMOeuDscHq1lQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+                       s=arcselector10001;
+                       h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+                       bh=Gr73VMXmemT3PWfV4FBeSdtJP3yHLwKjF7pyytwLb8A=;
+                       b=htrkN3c0yMya2MXdlcU4dbk2CFG3Hk7Dezrkx3/X7koOs52ritNefVAONJA3QKbwNIJf3aV70CxgZpLCu6i4PLHRBMC5FQgQebcJCPgW9tM/vQHRm3Ud2aiM1vqlSbNw2HtJ/4W3tzPWjbLneE2WmEd4mEt2ObEPDzhnIiJFl59GvBzphthPvZeGz3LU4NlK39CmLsX2BzoHvvWQpiv4XSYlqr8C37KZMl7FWLjKzoEv+AOyfE/HFYEuEWdftGVXpIANTE2lGahkm5+9lDvQdWAZgowu3x5q3nBspLItvAtB1EU2UHFmWaw3XwLYCQ+0tl7yiVsZeZgRwrhjk7d7bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+                         87.253.234.166) smtp.rcpttodomain=princeton.edu
+                         smtp.mailfrom=a1699369.bnc3.mailjet.com; dmarc=pass
+                         (p=reject sp=reject pct=100) action=none
+                         header.from=princeton.edu; dkim=pass (signature was
+                         verified) header.d=princeton.edu; arc=none (0)
+Received: from CH5P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::10)
+          by DM6PR04MB6298.namprd04.prod.outlook.com (2603:10b6:5:1ef::8) with
+          Microsoft SMTP Server (version=TLS1_2,
+          cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.16; Sat,
+          21 Dec 2024 15:47:35 +0000
+Received: from CH2PEPF000000A0.namprd02.prod.outlook.com
+          (2603:10b6:610:1f3:cafe::b6) by CH5P223CA0002.outlook.office365.com
+          (2603:10b6:610:1f3::10) with Microsoft SMTP Server (version=TLS1_3,
+          cipher=TLS_AES_256_GCM_SHA384) id 15.20.8272.16 via Frontend
+          Transport; Sat, 21 Dec 2024 15:47:35 +0000
+Received-SPF: Pass (protection.outlook.com: domain of a1699369.bnc3.mailjet.com
+              designates 87.253.234.166 as permitted sender)
+              receiver=protection.outlook.com; client-ip=87.253.234.166;
+              helo=o166.p9.mailjet.com; pr=C
+Received: from o166.p9.mailjet.com (87.253.234.166) by
+          CH2PEPF000000A0.mail.protection.outlook.com (10.167.244.26) with
+          Microsoft SMTP Server (version=TLS1_3,
+          cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.15 via Frontend
+          Transport; Sat, 21 Dec 2024 15:47:34 +0000
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Feedback-Id: HoagieMail.1699369.1642397:MJ
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid: CAAABm45Ou8AAAAAAAAAAABPFREAAAAADlsAAAAAABnuKQBnZuMVtFrAQIn5QMuoujXq84CIlgAZD50
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to abuse@mailjet.com
+                   with a copy of the message
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=-8oGgSR28xo/8gxbrIjkU"
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 2ff60116-7431-425d-b5af-077d7791bda4:0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF000000A0:EE_|DM6PR04MB6298:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19bedddf-f9c4-43ed-e938-08dd21d6c9de
+X-LD-Processed: 2ff60116-7431-425d-b5af-077d7791bda4,ExtAddr
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|29132699027|30052699003|1800799024|4022899009|9140799003|8096899003;
+X-Microsoft-Antispam-Message-Info:
+                         gIMRZcL6Ksg1BNHs8FxvTyp4cgEDFdml4zwzJ+Nx6Z/C+7L6escBdZA/uQzCNfp96GWMUn/RNkSFS6YBwuc7e3Ws0y/smq0zxvU2DW3os2e5nNFGkTEQgXQh4DJQe7TmL3ggoF3iMiQcai33JDFtRQbQ+ohDuf8FV2MhHIls62utJ55iIGKPyMr0/XjJqUnbz7CPoyh/+y93wKGvT2o8xVVxoDW0A7rmf+E6wmbAJsFE52FbtHDZb8FhdiaAZs3vGk45ur89NXMYCP3tCp/7xIM5q+Wd9UfSaWrbf1pap06LqNowtbD3GMgUhAb8v/QMMWoH5VhWKclQp0++iXCBKvC1539LloGzCfLQ+SBBYuFhdPmBPYhg/iEbk09EsTIT3TUGO62nUlDZdfrnjUWDawfD1j3u/BNfXOrP7WoBCOOLlQ+qm6dm/aTnI+yKrbWnYjHlzKiRUbfQaT3N1gBhHn6tD36BNj+I40M1jO7XORCzhuFfZdW/8gDg3kMRwx6BSXd3RMUIGuVDydJ8HUThLIJvRHeRJVAmn7t74Ccg1liXjYiEbuHwxPEh0U3ElPlU8kBrv04CESARchB5HsUyRFzpAwZlSFHJESyD16inbClJu7tsqkymTnPof/QwGoj+3LX1VJrk7uT0LAiaywzaTKQrjliW0bRr28P+TwGZfnDHkZhfso23E1UJkGoMq+3atulzfbZDpwPvtd5K6oGAIarzqJc3TYEd3egGhkkn7B+LjT704nPB55WbND7lgBSo
+X-Forefront-Antispam-Report:
+                         CIP:87.253.234.166;CTRY:FR;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:o166.p9.mailjet.com;PTR:o166.p9.mailjet.com;CAT:NONE;SFS:(13230040)(376014)(29132699027)(30052699003)(1800799024)(4022899009)(9140799003)(8096899003);DIR:OUT;SFP:1102;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Dec 2024 15:47:34.6900 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+                         19bedddf-f9c4-43ed-e938-08dd21d6c9de
+X-MS-Exchange-CrossTenant-Id: 2ff60116-7431-425d-b5af-077d7791bda4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF000000A0.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR04MB6298
+X-CrossPremisesHeadersFilteredBySendConnector: cisdrex205w.pu.win.princeton.edu
+X-OrganizationHeadersPreserved: cisdrex205w.pu.win.princeton.edu
+Message-ID:  <5cc18829.CAAABm45Ou8AAAAAAAAAAABPFREAAAAADlsAAAAAABnuKQBnZuMV@mailjet.com>
+Date:         Sat, 21 Dec 2024 15:47:33 +0000
+Reply-To:     Whig-Clio <samuel_kligman@princeton.edu>
+Sender:       whitmanwire <WHITMANWIRE@Princeton.EDU>
+From:         Whig-Clio <hoagie@princeton.edu>
+Subject: Whig-Clio Governing Council Applications Open!
+X-To:         Whig-Clio <samuel_kligman@princeton.edu>
+X-cc:         Forbes <Re-INNformer@Princeton.EDU>,
+              NCW <westwire@Princeton.EDU>, Mathey <matheymail@Princeton.EDU>,
+              Yeh <yehyellowpages@Princeton.EDU>,
+              hoagiemailgradstudents <hoagiemailgradstudents@Princeton.EDU>,
+              Butler <BUTLERBUZZ@Princeton.EDU>,
+              Whitman <WHITMANWIRE@Princeton.EDU>,
+              Rocky <RockyWire@Princeton.EDU>
+To:           WHITMANWIRE@Princeton.EDU
+Precedence: list
+List-Help: <https://lists.princeton.edu/cgi-bin/wa?LIST=WHITMANWIRE>,
+           <mailto:LISTSERV@LISTS.PRINCETON.EDU?body=INFO%20WHITMANWIRE>
+List-Unsubscribe: <mailto:WHITMANWIRE-unsubscribe-request@LISTS.PRINCETON.EDU>
+List-Subscribe: <mailto:WHITMANWIRE-subscribe-request@LISTS.PRINCETON.EDU>
+List-Owner: <mailto:WHITMANWIRE-request@LISTS.PRINCETON.EDU>
+List-Archive: <https://lists.princeton.edu/cgi-bin/wa?LIST=WHITMANWIRE>
+X-Proofpoint-GUID: tgYZIwI1RbT0rYc70-BHmI3olQ7ois79
+X-Proofpoint-ORIG-GUID: tgYZIwI1RbT0rYc70-BHmI3olQ7ois79
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412210140
+
+--=-8oGgSR28xo/8gxbrIjkU
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<p>Greetings Princeton!</p><div>With the holiday season upon us, now is the=
+ perfect time to help lead the merriest political, literary, and debate soc=
+iety of them all!=C2=A0<strong>Applications to join the Whig-Clio Governing=
+ Council are now open until January 2nd at 11:59 PM.</strong>=C2=A0All Memb=
+ers in Good Standing are encouraged to apply!=C2=A0</div><div><br></div><di=
+v>A link to the position=C2=A0descriptions can be found=C2=A0<a href=3D"htt=
+ps://docs.google.com/document/d/1AAKnqngKTQJqDCN9dDtE3nOyzbuyRzHf2MDhD3gCef=
+k/edit?usp=3Dsharing" rel=3D"nofollow">here</a>.</div><div>A link to the ap=
+plication can be found=C2=A0<a href=3D"https://docs.google.com/forms/d/e/1F=
+AIpQLSdJ2t77DTjZXsxGgmS2L9bbj5ZLPOa2NjxiB6Ve6L5y_Arbvg/viewform?usp=3Dshari=
+ng" rel=3D"nofollow">here</a>.</div><div><br></div><div>For any questions, =
+please email=C2=A0<a href=3D"mailto:whigcliosociety@gmail.com" rel=3D"nofol=
+low">whigcliosociety@gmail.com</a>. Also feel free to reach out to Presiden=
+t Samuel Kligman (<a href=3D"mailto:sk7122@princeton.edu" rel=3D"nofollow">=
+sk7122@princeton.edu</a>) or Vice President Khoa Sands (<a href=3D"mailto:k=
+s8696@princeton.edu" rel=3D"nofollow">ks8696@princeton.edu</a>).</div><div>=
+<br></div><div>Happy holidays,</div><div><strong>Samuel Kligman and Khoa Sa=
+nds</strong></div><div><em>President and Vice President of the American Whi=
+g-Cliosophic Society</em></div>
+	<hr />
+	<div style=3D"font-size:8pt;">This email was instantly sent to all
+	college listservs with <a href=3D"https://mail.hoagie.io/">Hoagie Mail</a>=
+.=20
+	Email composed by Samuel L. Kligman (samuel_kligman@princeton.edu) =E2=80=
+=94 if you believe this email
+	is offensive, intentionally misleading or harmful, please report it to
+	<a href=3D"mailto:hoagie@princeton.edu">hoagie@princeton.edu</a>.</div>
+=09=
+
+--=-8oGgSR28xo/8gxbrIjkU
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<p>Greetings Princeton!</p><div>With the holiday season upon us, now is the=
+ perfect time to help lead the merriest political, literary, and debate soc=
+iety of them all!=C2=A0<strong>Applications to join the Whig-Clio Governing=
+ Council are now open until January 2nd at 11:59 PM.</strong>=C2=A0All Memb=
+ers in Good Standing are encouraged to apply!=C2=A0</div><div><br></div><di=
+v>A link to the position=C2=A0descriptions can be found=C2=A0<a href=3D"htt=
+ps://docs.google.com/document/d/1AAKnqngKTQJqDCN9dDtE3nOyzbuyRzHf2MDhD3gCef=
+k/edit?usp=3Dsharing" rel=3D"nofollow">here</a>.</div><div>A link to the ap=
+plication can be found=C2=A0<a href=3D"https://docs.google.com/forms/d/e/1F=
+AIpQLSdJ2t77DTjZXsxGgmS2L9bbj5ZLPOa2NjxiB6Ve6L5y_Arbvg/viewform?usp=3Dshari=
+ng" rel=3D"nofollow">here</a>.</div><div><br></div><div>For any questions, =
+please email=C2=A0<a href=3D"mailto:whigcliosociety@gmail.com" rel=3D"nofol=
+low">whigcliosociety@gmail.com</a>. Also feel free to reach out to Presiden=
+t Samuel Kligman (<a href=3D"mailto:sk7122@princeton.edu" rel=3D"nofollow">=
+sk7122@princeton.edu</a>) or Vice President Khoa Sands (<a href=3D"mailto:k=
+s8696@princeton.edu" rel=3D"nofollow">ks8696@princeton.edu</a>).</div><div>=
+<br></div><div>Happy holidays,</div><div><strong>Samuel Kligman and Khoa Sa=
+nds</strong></div><div><em>President and Vice President of the American Whi=
+g-Cliosophic Society</em></div>
+	<hr />
+	<div style=3D"font-size:8pt;">This email was instantly sent to all
+	college listservs with <a href=3D"https://mail.hoagie.io/">Hoagie Mail</a>=
+.=20
+	Email composed by Samuel L. Kligman (samuel_kligman@princeton.edu) =E2=80=
+=94 if you believe this email
+	is offensive, intentionally misleading or harmful, please report it to
+	<a href=3D"mailto:hoagie@princeton.edu">hoagie@princeton.edu</a>.</div>
+=09=
+
+--=-8oGgSR28xo/8gxbrIjkU--
