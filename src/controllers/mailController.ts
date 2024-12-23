@@ -6,12 +6,11 @@ import { getTags } from "../inference/tagging";
 // import { HookModel } from "../models/hookModel";
 import { createEmbedding } from "../utils/openai";
 import { getAttachmentDescriptions } from "../inference/attachments";
+import { AuthorizationModel, AuthorizationType } from "../models/authModel";
 const { convert } = require("html-to-text");
 
 // const { query } = require("mongo-query");
 
-const AUTHORIZED_SENDERS: string[] = ["sender@example.com"];
-const AUTHORIZED_RECIPIENTS: string[] = [];
 // const WEBHOOK_BATCH_SIZE = 64;
 
 class ErrorWithResponseCode extends Error {
@@ -25,21 +24,19 @@ class ErrorWithResponseCode extends Error {
   }
 }
 
-// nodeMailin.on("authorizeUser", () => {});
-// export const handleAuthorizeUser = async (
-//   connection: SMTPConnection,
-//   username: string,
-//   password: string,
-//   done: (error: Error, authorized: boolean) => void
-// ) => {};
-
-// nodeMailin.on("validateSender", () => {});
 export const handleValidateSender = async (
   session: any,
   address: string,
   callback: (error?: Error) => void
 ) => {
-  if (AUTHORIZED_SENDERS.length == 0 || AUTHORIZED_SENDERS.includes(address)) {
+  const [count, isAuthorized] = await Promise.all([
+    AuthorizationModel.countDocuments(),
+    AuthorizationModel.exists({
+      address,
+      type: AuthorizationType.SENDER,
+    }),
+  ]);
+  if (count === 0 || isAuthorized) {
     callback();
   } else {
     const err = new ErrorWithResponseCode("Failed validate sender", 530);
@@ -53,10 +50,14 @@ export const handleValidateRecipient = async (
   address: string,
   callback: (error?: Error) => void
 ) => {
-  if (
-    AUTHORIZED_RECIPIENTS.length == 0 ||
-    AUTHORIZED_RECIPIENTS.includes(address)
-  ) {
+  const [count, isAuthorized] = await Promise.all([
+    AuthorizationModel.countDocuments(),
+    AuthorizationModel.exists({
+      address,
+      type: AuthorizationType.RECIPIENT,
+    }),
+  ]);
+  if (count === 0 || isAuthorized) {
     callback();
   } else {
     const err = new ErrorWithResponseCode("Failed validate recipient", 550);
