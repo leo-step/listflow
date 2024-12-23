@@ -82,11 +82,9 @@ export const handleMessage = async (
   // TODO:
   // event extraction
   // handle duplicate emails
-  // create indexes
   // handle image OCR
-  // handle attachments
+  // handle links
   data.text = convert(data.html);
-  console.log(data);
   const attachments = await getAttachmentDescriptions(data);
   const parsedText = createParsedEmailText(data, attachments);
 
