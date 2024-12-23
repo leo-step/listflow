@@ -1,3 +1,4 @@
+import { ImageCacheModel } from "../models/imageCacheModel";
 import { Attachment, SMTPEmail } from "../types/mailTypes";
 
 const MAX_ATTACHMENTS = 10;
@@ -14,7 +15,21 @@ export const getAttachmentDescriptions = async (data: SMTPEmail) => {
 };
 
 const processImageAttachment = async (image: Attachment) => {
-  return ""; // TODO: process image
+  const imageCacheDoc = await ImageCacheModel.findOne({
+    checksum: image.checksum,
+  });
+  if (imageCacheDoc) {
+    return imageCacheDoc.description;
+  }
+  const description = ""; // TODO: process image (reduce size)
+
+  const imageCache = new ImageCacheModel({
+    checksum: image.checksum,
+    description: description,
+  });
+  await imageCache.save();
+
+  return description;
 };
 
 // attachments: [
