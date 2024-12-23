@@ -44,6 +44,18 @@ const initializeMongoDB = async () => {
           key: { messageId: 1 },
           name: "messageId_1",
         },
+        {
+          key: { "computed.expiry": -1 },
+        },
+        {
+          key: { "computed.tags": 1 },
+        },
+        {
+          key: { from: 1 },
+        },
+        {
+          key: { to: 1 },
+        },
       ]);
     } catch {
       console.log("Indexes already created");
