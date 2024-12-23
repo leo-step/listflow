@@ -9,7 +9,7 @@ dotenv.config();
 const emailFileName = "tests/emails/whig_google_docs_attachment.eml";
 
 // const API_PORT = process.env.API_PORT || 3000;
-const SMTP_PORT = process.env.SMTP_PORT || 25;
+const SMTP_PORT = process.env.SMTP_PORT || 587;
 
 const emailContent = fs.readFileSync(emailFileName, "utf-8");
 
