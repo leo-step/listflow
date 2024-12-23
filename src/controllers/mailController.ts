@@ -71,7 +71,7 @@ export const handleStartMessage = (connection: SMTPConnection) => {
 const createParsedEmailText = (data: SMTPEmail, attachments: string[]) => {
   return `SUBJECT: ${data.subject}\nFrom: ${
     data.envelopeFrom.address
-  }\nBody: ${convert(data.html)}\nAttachments: ${attachments.join("\n")}`;
+  }\nBody: ${convert(data.html)}\n\nAttachments: ${attachments.join("\n")}`;
 };
 
 export const handleMessage = async (

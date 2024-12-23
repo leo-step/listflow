@@ -1,5 +1,6 @@
 import { ImageCacheModel } from "../models/imageCacheModel";
 import { Attachment, SMTPEmail } from "../types/mailTypes";
+import { openai } from "../utils/openai";
 
 const MAX_ATTACHMENTS = 10;
 
@@ -21,7 +22,40 @@ const processImageAttachment = async (image: Attachment) => {
   if (imageCacheDoc) {
     return imageCacheDoc.description;
   }
-  const description = ""; // TODO: process image (reduce size)
+
+  if (image.size > 10000000) {
+    return "Image attachment was too big to process.";
+  }
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "Describe what is in this image. If there is any text, make sure to transcribe it word for word.",
+          },
+          {
+            type: "image_url",
+            image_url: {
+              // TODO: this image should be stored and be accessible through S3, store link in image cache
+              url: `data:${image.contentType};base64,${image.content.toString(
+                "base64"
+              )}`,
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  const description = response.choices[0].message.content;
+
+  if (!description) {
+    return "Image description could not be processed.";
+  }
 
   const imageCache = new ImageCacheModel({
     checksum: image.checksum,

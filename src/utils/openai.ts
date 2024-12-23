@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const openai = new OpenAI();
+export const openai = new OpenAI();
 
 export type Prompt = (...args: any[]) => string;
 
