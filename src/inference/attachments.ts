@@ -1,8 +1,10 @@
 import { Attachment, SMTPEmail } from "../types/mailTypes";
 
+const MAX_ATTACHMENTS = 10;
+
 export const getAttachmentDescriptions = async (data: SMTPEmail) => {
   const promises: Promise<string>[] = [];
-  for (const attachment of data.attachments) {
+  for (const attachment of data.attachments.slice(0, MAX_ATTACHMENTS)) {
     if (attachment.contentType.startsWith("image/")) {
       promises.push(processImageAttachment(attachment));
     }
