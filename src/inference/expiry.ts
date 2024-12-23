@@ -12,7 +12,7 @@ const getExpiryTimePrompt = userPrompt((text: string, currentDate: string) => {
     If there is no date referenced, return null for the time.`;
 });
 
-export const getExpiryTime = async (email: SMTPEmail) => {
+export const getExpiryTime = async (email: SMTPEmail, parsedText: string) => {
   type expiryTimeResponse = {
     time: string;
   };
@@ -29,10 +29,9 @@ export const getExpiryTime = async (email: SMTPEmail) => {
 
   const formatter = new Intl.DateTimeFormat("en-US", options);
   const formattedDate = formatter.format(date);
-  console.log(formattedDate);
 
   const response = await getOpenAIJsonResponse<expiryTimeResponse>([
-    getExpiryTimePrompt(email.text, formattedDate),
+    getExpiryTimePrompt(parsedText, formattedDate),
   ]);
 
   if (!response || !response.time) {

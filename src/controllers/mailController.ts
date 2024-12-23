@@ -89,7 +89,7 @@ export const handleMessage = async (
 
   const [embedding, expiry, tags] = await Promise.all([
     createEmbedding(parsedText),
-    getExpiryTime(data), // should this use parsedText?
+    getExpiryTime(data, parsedText),
     getTags(data, parsedText),
   ]);
 
