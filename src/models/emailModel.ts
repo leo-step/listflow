@@ -11,7 +11,7 @@ const EmailSchema = new Schema({
     expiry: { type: Number, required: true },
     embedding: { type: [Number], required: true },
     tags: { type: [String], required: true },
-    attachments: { type: [String], required: true },
+    parsedText: { type: String, required: true },
   },
 });
 

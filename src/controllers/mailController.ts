@@ -108,7 +108,7 @@ export const handleMessage = async (
       expiry,
       embedding,
       tags,
-      attachments,
+      parsedText,
     },
   });
 
