@@ -23,7 +23,11 @@ export async function getImageDescription(
         mimeType: image.contentType,
       },
     },
-    "Describe what is in this image. If there is any text, make sure to transcribe it word for word.",
+    "Describe what is in this image. If there is any text, make sure to transcribe it word for word. Be concise.",
   ]);
-  return result.response.text();
+  return collapseWhitespace(result.response.text());
+}
+
+function collapseWhitespace(input: string): string {
+  return input.replace(/\s+/g, " ").trim();
 }
