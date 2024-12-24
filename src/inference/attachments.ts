@@ -1,4 +1,4 @@
-import { ImageCacheModel } from "../models/imageCacheModel";
+import { ImageModel } from "../models/imageModel";
 import { Attachment, SMTPEmail } from "../types/mailTypes";
 import { getImageDescription } from "../utils/googleai";
 
@@ -16,11 +16,11 @@ export const getAttachmentDescriptions = async (data: SMTPEmail) => {
 };
 
 const processImageAttachment = async (image: Attachment) => {
-  const imageCacheDoc = await ImageCacheModel.findOne({
+  let imageDoc = await ImageModel.findOne({
     checksum: image.checksum,
   });
-  if (imageCacheDoc) {
-    return imageCacheDoc.description;
+  if (imageDoc) {
+    return imageDoc.description;
   }
 
   if (image.size > 10000000) {
@@ -30,11 +30,11 @@ const processImageAttachment = async (image: Attachment) => {
   // TODO: this image should be stored and be accessible through S3, store link in image cache
   const description = await getImageDescription(image);
 
-  const imageCache = new ImageCacheModel({
+  imageDoc = new ImageModel({
     checksum: image.checksum,
     description: description,
   });
-  await imageCache.save();
+  await imageDoc.save();
 
   return description;
 };

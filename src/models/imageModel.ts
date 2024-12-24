@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
-const ImageCacheSchema = new Schema({
+const ImageSchema = new Schema({
   checksum: { type: String, required: true },
   description: { type: String, required: true },
 });
 
-const ImageCacheModel = model("ImageCache", ImageCacheSchema);
+const ImageModel = model("Image", ImageSchema);
 
-export { ImageCacheModel };
+export { ImageModel };
