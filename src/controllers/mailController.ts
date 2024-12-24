@@ -7,6 +7,8 @@ import { getTags } from "../inference/tagging";
 import { createEmbedding } from "../utils/openai";
 import { getAttachmentDescriptions } from "../inference/attachments";
 import { AuthorizationModel, AuthorizationType } from "../models/authModel";
+import { JSDOM } from "jsdom";
+
 const { convert } = require("html-to-text");
 
 // const { query } = require("mongo-query");
@@ -72,8 +74,22 @@ export const handleStartMessage = (connection: SMTPConnection) => {
 const createParsedEmailText = (data: SMTPEmail, attachments: string[]) => {
   return `SUBJECT: ${data.subject}\nFrom: ${
     data.envelopeFrom.address
-  }\nBody: ${convert(data.html)}\n\nAttachments: ${attachments.join("\n")}`;
+  }\nBody: ${convert(data.html)}\n\nAttachments: ${attachments.join("\n\n")}`;
 };
+
+function extractLinksFromHTML(html: string): string[] {
+  const dom = new JSDOM(html);
+  const links: string[] = [];
+
+  dom.window.document.querySelectorAll("a").forEach((anchor) => {
+    const href = anchor.getAttribute("href");
+    if (href) {
+      links.push(href);
+    }
+  });
+
+  return links;
+}
 
 export const handleMessage = async (
   connection: SMTPConnection,
@@ -83,21 +99,22 @@ export const handleMessage = async (
   // TODO:
   // event extraction
   // handle duplicate emails
-  // handle links
   data.text = convert(data.html);
+  const links = extractLinksFromHTML(data.html);
   const attachments = await getAttachmentDescriptions(data);
   const parsedText = createParsedEmailText(data, attachments);
 
   const [embedding, expiry, tags] = await Promise.all([
     createEmbedding(parsedText),
     getExpiryTime(data, parsedText),
-    getTags(data, parsedText),
+    getTags(data, parsedText, links),
   ]);
 
   const email = new EmailModel({
     html: data.html,
     text: data.text,
     subject: data.subject,
+    links: links,
     time: getUnixTime(data.date),
     messageId: data.messageId,
     from: data.envelopeFrom.address,

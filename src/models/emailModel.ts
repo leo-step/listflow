@@ -4,6 +4,7 @@ const EmailSchema = new Schema({
   html: { type: String, required: true },
   text: { type: String, required: true },
   subject: { type: String, required: true },
+  links: { type: [String], required: true },
   time: { type: Number, required: true }, // unix
   messageId: { type: String, required: true },
   from: { type: String, required: true },

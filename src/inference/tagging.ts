@@ -21,9 +21,15 @@ type TagsDict = {
   [key: string]: boolean;
 };
 
-const getRuleBasedTags = (data: SMTPEmail, topicTags: string[]) => {
+const getRuleBasedTags = (
+  data: SMTPEmail,
+  topicTags: string[],
+  links: string[]
+) => {
   const ruleTags: string[] = [];
   const toAddresses = data.envelopeTo.map((value) => value.address);
+
+  console.log(links);
 
   // const RULE_BASED_TAGS = [
   //   "Free Food",
@@ -84,8 +90,12 @@ const getTagsWithTrue = (tagsDict: TagsDict) => {
     .map(([key]) => key);
 };
 
-export const getTags = async (data: SMTPEmail, parsedText: string) => {
+export const getTags = async (
+  data: SMTPEmail,
+  parsedText: string,
+  links: string[]
+) => {
   const topicTags = await getTopicTags(parsedText);
-  const ruleTags = getRuleBasedTags(data, topicTags);
+  const ruleTags = getRuleBasedTags(data, topicTags, links);
   return Array.from(new Set([...ruleTags, ...topicTags]));
 };
