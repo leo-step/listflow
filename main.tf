@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "listflow_igw" {
 }
 
 resource "aws_route_table" "listflow_rt" {
-    vpc_id = aws.listflow_vpc.id
+    vpc_id = aws_vpc.listflow_vpc.id
     route {
         cidr_block = "0.0.0.0/0"
         gateway_id = aws_internet_gateway.listflow_igw.id
