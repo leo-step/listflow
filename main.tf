@@ -94,8 +94,6 @@ resource "aws_instance" "listflow_server" {
   vpc_security_group_ids = [aws_security_group.listflow_sg.id]
   subnet_id = aws_subnet.listflow_subnet.id
 
-  key_name = "listflow_key"
-
   tags = {
     Name = "listflow_server"
   }
