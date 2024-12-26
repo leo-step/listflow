@@ -131,3 +131,5 @@ dist
 
 # other
 .tmp
+
+.terraform
