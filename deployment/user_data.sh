@@ -3,9 +3,9 @@
 git clone https://github.com/leo-step/listflow
 cd listflow
 
-%{ for env_key, env_value in env }
-export ${env_key} = ${env_value}
-%{ endfor ~}
+export MONGO_URI="${MONGO_URI}"
+export OPENAI_API_KEY="${OPENAI_API_KEY}"
+export GEMINI_API_KEY="${GEMINI_API_KEY}"
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
