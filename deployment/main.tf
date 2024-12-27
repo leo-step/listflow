@@ -88,13 +88,23 @@ resource "aws_security_group" "listflow_sg" {
     }
 }
 
+variable "MONGO_URI" { type= string }
+variable "OPENAI_API_KEY" { type= string }
+variable "GEMINI_API_KEY" { type= string }
+
 resource "aws_instance" "listflow_server" {
   ami           = "ami-0e2c8caa4b6378d8c"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.listflow_sg.id]
   subnet_id = aws_subnet.listflow_subnet.id
 
-  user_data = file("./user_data.sh")
+  user_data = templatefile("./user_data.tftpl", {
+    env = {
+        "MONGO_URI"   = var.MONGO_URI
+        "OPENAI_API_KEY" = var.OPENAI_API_KEY
+        "GEMINI_API_KEY" = var.GEMINI_API_KEY
+        }
+    })
 
   tags = {
     Name = "listflow_server"

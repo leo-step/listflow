@@ -3,7 +3,9 @@
 git clone https://github.com/leo-step/listflow
 cd listflow
 
-# need to create .env file
+%{ for env_key, env_value in env }
+export ${env_key} = ${env_value}
+%{ endfor ~}
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
