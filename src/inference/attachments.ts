@@ -1,8 +1,25 @@
 import { ImageModel } from "../models/imageModel";
 import { Attachment, SMTPEmail } from "../types/mailTypes";
 import { getImageDescription } from "../utils/googleai";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const MAX_ATTACHMENTS = 10;
+
+const bucketName = process.env.BUCKET_NAME || "";
+const bucketRegion = process.env.BUCKET_REGION || "";
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID || "";
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
+
+const s3 = new S3Client({
+  region: bucketRegion,
+  credentials: {
+    accessKeyId,
+    secretAccessKey,
+  },
+});
 
 export const getAttachmentDescriptions = async (data: SMTPEmail) => {
   const promises: Promise<string>[] = [];
@@ -27,8 +44,15 @@ const processImageAttachment = async (image: Attachment) => {
     return "Image attachment was too big to process.";
   }
 
-  // TODO: this image should be stored and be accessible through S3, store link in image cache
   const description = await getImageDescription(image);
+
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: image.checksum,
+    Body: image.content,
+    ContentType: image.contentType,
+  });
+  await s3.send(command);
 
   imageDoc = new ImageModel({
     checksum: image.checksum,

@@ -6,7 +6,7 @@ const fs = require("fs");
 
 dotenv.config();
 
-const emailFileName = "tests/emails/whig_google_docs_attachment.eml";
+const emailFileName = "tests/emails/freefood_text_img_attachment.eml";
 
 // const API_PORT = process.env.API_PORT || 3000;
 const SMTP_PORT = process.env.SMTP_PORT || 587;
