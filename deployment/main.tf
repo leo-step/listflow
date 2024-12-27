@@ -67,6 +67,14 @@ resource "aws_security_group" "listflow_sg" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
+    ingress {
+        description = "SSH ingress"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
     egress {
         description = "HTTP egress"
         from_port = 0
@@ -85,6 +93,8 @@ resource "aws_instance" "listflow_server" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.listflow_sg.id]
   subnet_id = aws_subnet.listflow_subnet.id
+
+  user_data = file("./user_data.sh")
 
   tags = {
     Name = "listflow_server"
