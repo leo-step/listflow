@@ -68,6 +68,14 @@ resource "aws_security_group" "listflow_sg" {
     }
 
     ingress {
+        description = "SMTP ingress"
+        from_port = 587
+        to_port = 587
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
         description = "SSH ingress"
         from_port = 22
         to_port = 22
@@ -100,14 +108,13 @@ variable "MONGO_URI" { type = string }
 variable "OPENAI_API_KEY" { type = string }
 variable "GEMINI_API_KEY" { type = string }
 
-// for logs: cat /var/log/cloud-init-output.log
-
 resource "aws_instance" "listflow_server" {
   ami           = "ami-0e2c8caa4b6378d8c"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.listflow_sg.id]
   subnet_id = aws_subnet.listflow_subnet.id
 
+  // for logs: cat /var/log/cloud-init-output.log
   user_data = templatefile("./user_data.sh", local.env_vars)
 
   tags = {

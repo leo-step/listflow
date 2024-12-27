@@ -133,3 +133,4 @@ dist
 .tmp
 
 .terraform
+.auto.tfvars
