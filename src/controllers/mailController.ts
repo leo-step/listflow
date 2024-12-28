@@ -5,7 +5,7 @@ import { getExpiryTime } from "../inference/expiry";
 import { getTags } from "../inference/tagging";
 // import { HookModel } from "../models/hookModel";
 import { createEmbedding } from "../utils/openai";
-import { getAttachmentDescriptions } from "../inference/attachments";
+import { processImageAttachments } from "../inference/attachments";
 import { AuthorizationModel, AuthorizationType } from "../models/authModel";
 import { JSDOM } from "jsdom";
 
@@ -100,9 +100,13 @@ export const handleMessage = async (
   // event extraction
   // handle duplicate emails
   data.text = convert(data.html);
+
+  const imageAttachments = await processImageAttachments(data);
+  const imageChecksums = imageAttachments.map((doc) => doc.checksum);
+  const imageDescriptions = imageAttachments.map((doc) => doc.description);
+
+  const parsedText = createParsedEmailText(data, imageDescriptions);
   const links = extractLinksFromHTML(data.html);
-  const attachments = await getAttachmentDescriptions(data);
-  const parsedText = createParsedEmailText(data, attachments);
 
   const [embedding, expiry, tags] = await Promise.all([
     createEmbedding(parsedText),
@@ -115,6 +119,7 @@ export const handleMessage = async (
     text: data.text,
     subject: data.subject,
     links: links,
+    images: imageChecksums,
     time: getUnixTime(data.date),
     messageId: data.messageId,
     from: data.envelopeFrom.address,
