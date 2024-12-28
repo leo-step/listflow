@@ -3,23 +3,7 @@ import mongoose from "mongoose";
 import { Document } from "mongodb";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { S3Client } from "@aws-sdk/client-s3";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const bucketName = process.env.BUCKET_NAME || "";
-const bucketRegion = process.env.BUCKET_REGION || "";
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID || "";
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
-
-const s3Client = new S3Client({
-  region: bucketRegion,
-  credentials: {
-    accessKeyId,
-    secretAccessKey,
-  },
-});
+import { s3Client, bucketName } from "../s3";
 
 export const EMAILS_COLLECTION = "emails";
 const DEFAULT_LIMIT = 50;
