@@ -9,7 +9,7 @@ const accessKeyId = process.env.AWS_ACCESS_KEY_ID || "";
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "";
 
 export const s3Client = new S3Client({
-  region: bucketRegion,
+  region: "us-east-1",
   credentials: {
     accessKeyId,
     secretAccessKey,
