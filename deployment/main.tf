@@ -101,12 +101,22 @@ locals {
     MONGO_URI       = var.MONGO_URI
     OPENAI_API_KEY  = var.OPENAI_API_KEY
     GEMINI_API_KEY  = var.GEMINI_API_KEY
+    AWS_ACCESS_KEY_ID = var.AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY = var.AWS_SECRET_ACCESS_KEY
+    BUCKET_NAME = var.BUCKET_NAME
+    BUCKET_REGION = var.BUCKET_REGION
   }
 }
+
+// need to create prod s3 bucket and iam role
 
 variable "MONGO_URI" { type = string }
 variable "OPENAI_API_KEY" { type = string }
 variable "GEMINI_API_KEY" { type = string }
+variable AWS_ACCESS_KEY_ID { type = string }
+variable AWS_SECRET_ACCESS_KEY { type = string }
+variable BUCKET_NAME { type = string }
+variable BUCKET_REGION { type = string }
 
 resource "aws_instance" "listflow_server" {
   ami           = "ami-0e2c8caa4b6378d8c"
