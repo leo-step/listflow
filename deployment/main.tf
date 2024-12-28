@@ -109,14 +109,15 @@ locals {
 }
 
 // need to create prod s3 bucket and iam role
+// https://stackoverflow.com/questions/61302342/mongodb-sets-my-database-to-test-automatically-how-to-change-it
 
 variable "MONGO_URI" { type = string }
 variable "OPENAI_API_KEY" { type = string }
 variable "GEMINI_API_KEY" { type = string }
-variable AWS_ACCESS_KEY_ID { type = string }
-variable AWS_SECRET_ACCESS_KEY { type = string }
-variable BUCKET_NAME { type = string }
-variable BUCKET_REGION { type = string }
+variable "AWS_ACCESS_KEY_ID" { type = string }
+variable "AWS_SECRET_ACCESS_KEY" { type = string }
+variable "BUCKET_NAME" { type = string }
+variable "BUCKET_REGION" { type = string }
 
 resource "aws_instance" "listflow_server" {
   ami           = "ami-0e2c8caa4b6378d8c"
@@ -132,6 +133,7 @@ resource "aws_instance" "listflow_server" {
   }
 }
 
-output "aws_instance_public_ip" {
-    value = aws_instance.listflow_server.public_ip
+resource "aws_eip_association" "listflow_eip" {
+  allocation_id = "eipalloc-029eb7371f8fd6175"
+  instance_id   = aws_instance.listflow_server.id
 }
