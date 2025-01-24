@@ -14,7 +14,7 @@ const SMTP_PORT = process.env.SMTP_PORT || 587;
 const emailContent = fs.readFileSync(emailFileName, "utf-8");
 
 const transporter = nodemailer.createTransport({
-  host: "localhost",
+  host: "listflow.tigerapps.org",
   port: SMTP_PORT,
   secure: false,
   tls: {
